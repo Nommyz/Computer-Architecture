@@ -4,7 +4,7 @@
 
 28/09/2566
 - สร้างไฟล์ Assembler
-Assembler file update
+- Assembler file update
   - สร้าง Machinecode map
   - สร้าง method convert decimal(int) to binary(string)
-- สร้าง test file
+ - สร้าง test file
