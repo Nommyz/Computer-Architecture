@@ -40,7 +40,11 @@ public class Assembler {
     Assembler(String assembly) {
         tok = new Tokenizer(assembly);
     }
-
+    /**
+     * Converts a decimal integer into a binary string.
+     * @param dec The decimal integer.
+     * @return The binary string.
+     */
     public static String toBinaryString(int dec) {
         if (DEBUG) System.out.print("toBinaryString(" + dec + "): ");
 
@@ -62,5 +66,79 @@ public class Assembler {
         if (DEBUG) System.out.println(bin);
 
         return bin.toString();
+    }
+    /**
+     * Converts a token into an integer.
+     * @param token The token to be converted.
+     * @return The integer.
+     */
+    public static int toInteger(String token) {
+        return Integer.parseInt(token);
+    }
+    /**
+     * Converts a binary string into a decimal integer.
+     * @param bin The binary string.
+     * @return decimal integer.
+     */
+    public static int toDecimal(String bin) {
+        if (DEBUG) System.out.print("toDecimal(" + bin + "): ");
+
+        int dec = 0;
+        int power = 0;
+
+        if (bin.charAt(0) == '0') {
+            for (int i = bin.length() - 1; i >= 0; i--) {
+                dec += toInteger(bin.charAt(i) + "") * Math.pow(2, power);
+                power++;
+            }
+        } else {
+            bin = twosCompliment(bin);
+            for (int i = bin.length() - 1; i >= 0; i--) {
+                dec += toInteger(bin.charAt(i) + "") * Math.pow(2, power);
+                power++;
+            }
+            dec = -dec;
+        }
+
+        if (DEBUG) System.out.println(dec);
+
+        return dec;
+    }
+    /**
+     * Perform 2's compliment on the binary string.
+     * @param bin The binary string to be converted.
+     * @return result of binary string in 2's compliment form.
+     */
+    public static String twosCompliment(String bin) {
+        String twos = "", ones = "";
+
+        for (int i = 0; i < bin.length(); i++) {
+            ones += flip(bin.charAt(i));
+        }
+        StringBuilder builder = new StringBuilder(ones);
+
+     //Plus one
+        for (int i = ones.length() - 1; i > 0; i--) {
+            if (ones.charAt(i) == '1') {
+                builder.setCharAt(i, '0');
+            } else {
+                builder.setCharAt(i, '1');
+                break;
+            }
+        }
+        twos = builder.toString(); // completely (filpbit + 1)
+
+        if (DEBUG) System.out.println("twosCompliment(" + bin + "): " + twos);
+        return twos;
+    }
+
+    /**
+     * Flips a character bit from '0' to '1'
+     */
+    public static char flip(char c) {
+        if (c == '0') {
+            return '1';
+        }
+        return '0';
     }
 }
