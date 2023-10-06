@@ -48,4 +48,24 @@ public class AssemblerTest {
         // n-bit case
         Assert.assertEquals("01001", Assembler.twosCompliment("10111"));  //-9 -> 9
     }
+    @Test
+    public void testIsInteger(){
+        Assert.assertEquals(true, Assembler.isInteger("1"));
+        Assert.assertEquals(false, Assembler.isInteger("1.1"));
+        Assert.assertEquals(true, Assembler.isInteger("-1"));
+        Assert.assertEquals(false, Assembler.isInteger("a"));
+        Assert.assertEquals(false, Assembler.isInteger("1a"));
+        Assert.assertEquals(false, Assembler.isInteger("John"));
+        Assert.assertEquals(false, Assembler.isInteger("Jason1"));
+    }
+
+    @Test
+    public void testFillBit(){
+        Assert.assertEquals("0000000000000001", Assembler.fillBits("0","1",16));
+        Assert.assertEquals("00000001", Assembler.fillBits("0","1",8));
+        Assert.assertEquals("00000000000000000000000111101001", Assembler.fillBits("0","111101001",32));
+        Assert.assertEquals("11111111111000", Assembler.fillBits("1","000",14));
+        Assert.assertEquals("1111111111111111111111111111111111111111111111111111111111111110", Assembler.fillBits("1","0",64));
+        Assert.assertEquals("44441", Assembler.fillBits("4","1",5));
+    }
 }
