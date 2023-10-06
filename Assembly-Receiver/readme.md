@@ -25,3 +25,6 @@
   - สร้าง test case ง่ายๆ และ test case ที่อยู่ใน website project
   - เพิ่ม test method ใน test file
   - สร้าง Main file ใช้สำหรับ compile assembler เพื่อแปลง assembly code เป็น Machine code(ทั้ง decimal และ binary) 
+  - Machine code แต่ละแบบ
+      - .bin(binary)
+      - .txt(decimal)
