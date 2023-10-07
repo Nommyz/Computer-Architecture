@@ -9,6 +9,7 @@ public class Simulator {
     private static final int NUMMEMORY = 65536; // maximum number of words in memory
     private static final int NUMREGS = 8; // number of machine registers
     private static final int MAXLINELENGTH = 1000;
+    private boolean isHalt = 0;
 
 
     public static class StateStruct{
@@ -21,18 +22,18 @@ public class Simulator {
     public static void printState(StateStruct state){
     int i;
     System.out.println("\n@@@\nstate: ");
-    System.out.println("\tpc" + state.pc);
+    System.out.println("\tpc " + state.pc);
     System.out.println("\tmemory: ");
 	for (i=0; i<state.numMemory; i++) {
-	    System.out.println("\t\tmem[ %d ] %d\n" + i + state.mem[i]);
+	    System.out.println("\t\tmem[ " + i + " ] " + state.mem[i]);
 	}
     System.out.println("\tregisters: ");
 	for (i=0; i < NUMREGS; i++) {
-	    System.out.println("\t\treg[ %d ] %d\n" + i + state.reg[i]);
+        System.out.println("\t\treg[ " + i + " ] " + state.reg[i]);
 	}
     System.out.println("end state\n");
     }
-    
+
     public static void main(String[] args) throws FileNotFoundException {
 //        try {
 //            StateStruct state = new StateStruct();
@@ -80,32 +81,87 @@ public class Simulator {
 
         state.pc = 0;
         int[] arg = new int[3];
-        int RegA , RegB , DestReg;
+        int RegA , RegB , DestReg , Offset;
         for(int i = 1; i <= 999 ; i++){
             switch (state.mem[state.pc] >> 22){
                 case 0: //add 000
                     RFormat(state.mem[state.pc],arg);
                     RegA = state.reg[arg[0]];
-                    RegB = state.mem[arg[1]];
+                    RegB = state.reg[arg[1]];
                     state.reg[arg[2]] = RegA + RegB;
+
+                    state.pc = state.pc + 1;
                     break;
                 case 1: //nand 001
+                    RFormat(state.mem[state.pc],arg);
+                    RegA = state.reg[arg[0]];
+                    RegB = state.reg[arg[1]];
+                    state.reg[arg[2]] = ;
+
+                    state.pc = state.pc + 1;
                     break;
                 case 2: //lw 010
+                    IFormat(state.mem[state.pc],arg);
+                    RegA = state.reg[arg[0]];
+                    Offset = state.reg[arg[2]];
+                    RegB = state.mem[RegA + Offset];
+                    state.reg[arg[1]] = RegB;
+
+                    state.pc = state.pc + 1;
                     break;
                 case 3: //sw 011
+                    IFormat(state.mem[state.pc],arg);
+                    RegA = state.reg[arg[0]];
+                    RegB = state.reg[arg[1]];
+                    Offset = state.reg[arg[2]];
+                    state.mem[RegA + Offset] = RegB;
+
+                    state.pc = state.pc + 1;
                     break;
                 case 4: // beq 100
+                    IFormat(state.mem[state.pc],arg);
+                    RegA = state.reg[arg[0]];
+                    RegB = state.reg[arg[1]];
+                    Offset = state.reg[arg[2]];
+                    if(RegA == RegB){
+                        state.pc = state.pc + 1 + Offset;
+                    }else{
+                        state.pc = state.pc + 1;
+                    }
                     break;
                 case 5: // jalr 101
+                    JFormat(state.mem[state.pc],arg);
+                    RegA = state.reg[arg[0]];
+                    RegB = state.reg[arg[1]];
+                    if(arg[0] == arg[1]){
+                        RegB = state.pc + 1;
+                        state.reg[arg[1]] = RegB;
+                        state.pc = state.pc + 1;
+                    }else{
+                        RegB = state.pc + 1;
+                        state.reg[arg[1]] = RegB;
+                        state.pc = RegA;
+                    }
                     break;
                 case 6: //bhalt
+                    OFormat(state.mem[state.pc],arg);
+                    state.pc = state.pc + 1;
+                    isHalt = 1;
                     break;
                 case 7: //ไม่ทำอะไร
+                    OFormat(state.mem[state.pc],arg);
                     break;
             }
         }
-        
+
+    }
+
+    private static int convertNum(int num){
+        /* convert a 16-bit number into a 32-bit integer */
+        if (num & (1<<15) ) {
+            num -= (1<<16);
+        }
+        return(num);
     }
 
     /**
@@ -125,7 +181,15 @@ public class Simulator {
      * @param arg using arg for waiting BitNum to calculate logic
      */
     private static void IFormat(int BitNum, int[] arg){
+        arg[0] = (BitNum & (7 << 19)) >> 19; // regA เอา bit ที่ 21-19
+        arg[1] = (BitNum & (7 << 16)) >> 16; // regB เอา bit ที่ 18-16
+        arg[2] = convertNum(BitNum & 65535); // OffsetField เอา bit ที่ 15-0 โดยเป็น 2s' complement
 
+//        if((BitNum >> 15) & 1){
+//            arg[2] = (BitNum & 32767) - (BitNum & (1 << 15)); // กรณี 1 OffsetField เป็น -
+//        }else{
+//            arg[2] = BitNum & 32767; // กรณี 0 OffsetField เป็น +
+//        }
     }
 
     /**
@@ -134,7 +198,8 @@ public class Simulator {
      * @param arg using arg for waiting BitNum to calculate logic
      */
     private static void JFormat(int BitNum, int[] arg){
-
+        arg[0] = (BitNum & (7 << 19)) >> 19; // regA เอา bit ที่ 21-19
+        arg[1] = (BitNum & (7 << 16)) >> 16; // regB เอา bit ที่ 18-16
     }
 
     /**
