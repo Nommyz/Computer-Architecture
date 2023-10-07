@@ -9,7 +9,7 @@ public class Simulator {
     private static final int NUMMEMORY = 65536; // maximum number of words in memory
     private static final int NUMREGS = 8; // number of machine registers
     private static final int MAXLINELENGTH = 1000;
-    private boolean isHalt = 0;
+    private boolean isHalt = false;
 
 
     public static class StateStruct{
@@ -146,7 +146,7 @@ public class Simulator {
                 case 6: //bhalt
                     OFormat(state.mem[state.pc],arg);
                     state.pc = state.pc + 1;
-                    isHalt = 1;
+                    isHalt = true;
                     break;
                 case 7: //ไม่ทำอะไร
                     OFormat(state.mem[state.pc],arg);
@@ -156,13 +156,13 @@ public class Simulator {
 
     }
 
-    private static int convertNum(int num){
-        /* convert a 16-bit number into a 32-bit integer */
-        if (num & (1<<15) ) {
-            num -= (1<<16);
-        }
-        return(num);
-    }
+//    private static int convertNum(int num){
+//        /* convert a 16-bit number into a 32-bit integer */
+//        if (num & (1<<15) ) {
+//            num -= (1<<16);
+//        }
+//        return(num);
+//    }
 
     /**
      * using this method to assign Bits into arg for RFormat
@@ -183,13 +183,13 @@ public class Simulator {
     private static void IFormat(int BitNum, int[] arg){
         arg[0] = (BitNum & (7 << 19)) >> 19; // regA เอา bit ที่ 21-19
         arg[1] = (BitNum & (7 << 16)) >> 16; // regB เอา bit ที่ 18-16
-        arg[2] = convertNum(BitNum & 65535); // OffsetField เอา bit ที่ 15-0 โดยเป็น 2s' complement
+//        arg[2] = convertNum(BitNum & 65535); // OffsetField เอา bit ที่ 15-0 โดยเป็น 2s' complement
 
-//        if((BitNum >> 15) & 1){
-//            arg[2] = (BitNum & 32767) - (BitNum & (1 << 15)); // กรณี 1 OffsetField เป็น -
-//        }else{
-//            arg[2] = BitNum & 32767; // กรณี 0 OffsetField เป็น +
-//        }
+        if((BitNum >> 15) & 1){
+            arg[2] = (BitNum & 32767) - (BitNum & (1 << 15)); // กรณี 1 OffsetField เป็น -
+        }else{
+            arg[2] = BitNum & 32767; // กรณี 0 OffsetField เป็น +
+        }
     }
 
     /**
