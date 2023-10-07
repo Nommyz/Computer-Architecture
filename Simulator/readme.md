@@ -30,3 +30,6 @@
 8/10/2566
 - แก้ตรง ishalt ตอนแรกเป็น (0 / 1) -> (true / false)
 - แก้ตรงฟังก์ชัน convertNum ที่ error (ไม่ใช้ฟังก์ชัน convertNum แล้ว แต่เขียนให้ OffsetField ทำ 2s' complement ในฟังก์ชัน IFormat เลย)
+
+8/10/2566
+- เขียนเพิ่มใน switch-case ส่วน case 1: //nand 001
