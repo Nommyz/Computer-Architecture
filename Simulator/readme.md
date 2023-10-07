@@ -19,4 +19,10 @@
         - แก้ไข bug ตัวแปร
     - เพิ่มการอ่านไฟล์ machine-code.txt
     - เพิ่มไฟล์ machine-code.txt
-  
+
+7/10/2566
+- แก้ println ใน printstate ให้เป็นแบบ Java (ตอนแรกเป็นแบบ C++)
+- เขียนเพิ่มใน switch-case
+      - nand ยังไม่เสร็จ
+      - lw, sw, beq, jalr, halt เขียนแล้ว(แก้ไขได้นะ)
+- เขียนเพิ่มใน IFormat, JFormat, OFormat
