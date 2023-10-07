@@ -18,7 +18,7 @@ public class Main {
     public static void compile(String fileName){
         Assembler as = new Assembler(FileReaderWriter.readFileToString(SRC_DIR+fileName+SRC_EXT));
 
-        List<String> machineCodes = as.assembleIntoMachineCode();
+        List<String> machineCodes = as.assemblyIntoMachineCode();
         List<String> decimalMachineCodes = as.getDecimalMachineCodes();
 
         FileReaderWriter.writeStringToFile(OUTPUT_DIR + fileName+".bin", machineCodes);

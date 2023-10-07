@@ -17,6 +17,7 @@ public class Assembler {
             "halt", "O",
             "noop", "O",
             ".fill", "F");
+
     private static final Map<String, String> OPCODE_MAP = Map.of(
             "add", "000",
             "nand", "001",
@@ -55,7 +56,6 @@ public class Assembler {
      */
     private void loadLine() {
         lineData = new ArrayList<>();
-
         while (tok.hasNext()) {
             String token = tok.next();
             System.out.print(token);
@@ -83,7 +83,7 @@ public class Assembler {
      * Compile the assembly into binary machine codes.
      * @return The binary machine codes.
      */
-    public List<String> assembleIntoMachineCode() {
+    public List<String> assemblyIntoMachineCode() {
         // Iterate through the file once to fill labelMap
         loadLine();
         while (tok.hasNext()) { // If there is still a token, the file isn't fully read yet
