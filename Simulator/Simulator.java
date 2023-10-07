@@ -96,7 +96,28 @@ public class Simulator {
                     RFormat(state.mem[state.pc],arg);
                     RegA = state.reg[arg[0]];
                     RegB = state.reg[arg[1]];
-                    state.reg[arg[2]] = ;
+                    //ขั้นตอนทำ NAND
+                    String binA = Integer.toBinaryString(RegA); //แปลง RegA เป็น Binary
+                    String binB = Integer.toBinaryString(RegB); //แปลง RegB เป็น Binary
+                    //ทำให้จำนวนหลักเท่ากันก่อนเทียบ
+                    while(binA.length() != binB.length()){
+                        if(binA.length() > binB.length()){
+                            binB = "0" + binB;
+                        }else{
+                            binA = "0" + binA;
+                        }
+                    }
+                    String nand_str = "";
+                    // NAND
+                    for(int i = 0 ; i < binA.length() ; i++){
+                        if(binA.charAt(i) == '1' && binB.charAt(i) == '1'){
+                            nand_str += "0";
+                        }else{
+                            nand_str += "1";
+                        }
+                    }
+                    int nand_int = Integer.parseInt(nand_str, 2);
+                    state.reg[arg[2]] = nand_int;
 
                     state.pc = state.pc + 1;
                     break;
