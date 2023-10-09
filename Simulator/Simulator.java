@@ -9,7 +9,6 @@ public class Simulator {
     private static final int NUMMEMORY = 65536; // maximum number of words in memory
     private static final int NUMREGS = 8; // number of machine registers
     private static final int MAXLINELENGTH = 1000;
-    private boolean isHalt = false;
 
 
     public static class StateStruct{
@@ -50,7 +49,7 @@ public class Simulator {
             while (s.hasNextLine()) {
                 String data = s.nextLine();
                 state.mem[state.numMemory] = Integer.parseInt(data);
-                System.out.println(state.mem[state.numMemory]+ "\n");
+//                System.out.println(state.mem[state.numMemory]+ "\n");
                 state.numMemory++;
 
             }
@@ -89,7 +88,6 @@ public class Simulator {
                     RegA = state.reg[arg[0]];
                     RegB = state.reg[arg[1]];
                     state.reg[arg[2]] = RegA + RegB;
-
                     state.pc = state.pc + 1;
                     break;
                 case 1: //nand 001
@@ -109,8 +107,8 @@ public class Simulator {
                     }
                     String nand_str = "";
                     // NAND
-                    for(int i = 0 ; i < binA.length() ; i++){
-                        if(binA.charAt(i) == '1' && binB.charAt(i) == '1'){
+                    for(int a = 0 ; a < binA.length() ; a++){
+                        if(binA.charAt(a) == '1' && binB.charAt(a) == '1'){
                             nand_str += "0";
                         }else{
                             nand_str += "1";
@@ -167,12 +165,16 @@ public class Simulator {
                 case 6: //bhalt
                     OFormat(state.mem[state.pc],arg);
                     state.pc = state.pc + 1;
-                    isHalt = true;
+                    boolean isHalt = true;
                     break;
                 case 7: //ไม่ทำอะไร
                     OFormat(state.mem[state.pc],arg);
                     break;
             }
+            System.out.println("machine halted");
+//          System.out.println(total of + total + instructions executed);
+            System.out.println("final state of machine:");
+            printState(state);
         }
 
     }
@@ -206,7 +208,7 @@ public class Simulator {
         arg[1] = (BitNum & (7 << 16)) >> 16; // regB เอา bit ที่ 18-16
 //        arg[2] = convertNum(BitNum & 65535); // OffsetField เอา bit ที่ 15-0 โดยเป็น 2s' complement
 
-        if((BitNum >> 15) & 1){
+        if(((BitNum >> 15) & 1) == 1){
             arg[2] = (BitNum & 32767) - (BitNum & (1 << 15)); // กรณี 1 OffsetField เป็น -
         }else{
             arg[2] = BitNum & 32767; // กรณี 0 OffsetField เป็น +
