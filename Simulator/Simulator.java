@@ -19,18 +19,18 @@ public class Simulator {
     }
 
     public static void printState(StateStruct state){
-    int i;
-    System.out.println("\n@@@\nstate: ");
-    System.out.println("\tpc " + state.pc);
-    System.out.println("\tmemory: ");
-	for (i=0; i<state.numMemory; i++) {
-	    System.out.println("\t\tmem[ " + i + " ] " + state.mem[i]);
-	}
-    System.out.println("\tregisters: ");
-	for (i=0; i < NUMREGS; i++) {
-        System.out.println("\t\treg[ " + i + " ] " + state.reg[i]);
-	}
-    System.out.println("end state\n");
+        int i;
+        System.out.println("\n@@@\nstate: ");
+        System.out.println("\tpc " + state.pc);
+        System.out.println("\tmemory: ");
+        for (i=0; i<state.numMemory; i++) {
+            System.out.println("\t\tmem[ " + i + " ] " + state.mem[i]);
+        }
+        System.out.println("\tregisters: ");
+        for (i=0; i < NUMREGS; i++) {
+            System.out.println("\t\treg[ " + i + " ] " + state.reg[i]);
+        }
+        System.out.println("end state\n");
     }
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -44,7 +44,7 @@ public class Simulator {
 
 
         try {
-            File myText = new File("Simulator/machine-code.txt");
+            File myText = new File("src/machine-code.txt");
             Scanner s = new Scanner(myText);
             while (s.hasNextLine()) {
                 String data = s.nextLine();
@@ -78,12 +78,14 @@ public class Simulator {
 
 
 
-        state.pc = 0;
+//        state.pc = 0;
         int[] arg = new int[3];
         int RegA , RegB , DestReg , Offset;
-        for(int i = 1; i <= 999 ; i++){
+        for(int i = 1; i <= MAXLINELENGTH ; i++){
+            printState(state);
             switch (state.mem[state.pc] >> 22){
-                case 0: //add 000
+                case 0: //add 000 - Correct
+                    System.out.println("เข้า case 0: add");
                     RFormat(state.mem[state.pc],arg);
                     RegA = state.reg[arg[0]];
                     RegB = state.reg[arg[1]];
@@ -91,6 +93,7 @@ public class Simulator {
                     state.pc = state.pc + 1;
                     break;
                 case 1: //nand 001
+                    System.out.println("เข้า case 1: nand");
                     RFormat(state.mem[state.pc],arg);
                     RegA = state.reg[arg[0]];
                     RegB = state.reg[arg[1]];
@@ -119,29 +122,32 @@ public class Simulator {
 
                     state.pc = state.pc + 1;
                     break;
-                case 2: //lw 010
+                case 2: //lw 010 - Correct
+                    System.out.println("เข้า case 2: lw");
                     IFormat(state.mem[state.pc],arg);
                     RegA = state.reg[arg[0]];
-                    Offset = state.reg[arg[2]];
+                    Offset = arg[2];
                     RegB = state.mem[RegA + Offset];
                     state.reg[arg[1]] = RegB;
 
                     state.pc = state.pc + 1;
                     break;
                 case 3: //sw 011
+                    System.out.println("เข้า case 3: sw");
                     IFormat(state.mem[state.pc],arg);
                     RegA = state.reg[arg[0]];
                     RegB = state.reg[arg[1]];
-                    Offset = state.reg[arg[2]];
+                    Offset = arg[2];
                     state.mem[RegA + Offset] = RegB;
 
                     state.pc = state.pc + 1;
                     break;
                 case 4: // beq 100
+                    System.out.println("เข้า case 4: beq");
                     IFormat(state.mem[state.pc],arg);
                     RegA = state.reg[arg[0]];
                     RegB = state.reg[arg[1]];
-                    Offset = state.reg[arg[2]];
+                    Offset = arg[2];
                     if(RegA == RegB){
                         state.pc = state.pc + 1 + Offset;
                     }else{
@@ -149,6 +155,7 @@ public class Simulator {
                     }
                     break;
                 case 5: // jalr 101
+                    System.out.println("เข้า case 5: jalr");
                     JFormat(state.mem[state.pc],arg);
                     RegA = state.reg[arg[0]];
                     RegB = state.reg[arg[1]];
@@ -162,19 +169,20 @@ public class Simulator {
                         state.pc = RegA;
                     }
                     break;
-                case 6: //bhalt
+                case 6: // halt 110
+//                    System.out.println("เข้า case 6: halt");
                     OFormat(state.mem[state.pc],arg);
+                    System.out.println("machine halted");
+                    System.out.println("total of " + i + " instructions executed");
+                    System.out.println("final state of machine:");
+
                     state.pc = state.pc + 1;
-                    boolean isHalt = true;
                     break;
                 case 7: //ไม่ทำอะไร
+                    System.out.println("เข้า case 7: noop");
                     OFormat(state.mem[state.pc],arg);
                     break;
             }
-            System.out.println("machine halted");
-//          System.out.println(total of + total + instructions executed);
-            System.out.println("final state of machine:");
-            printState(state);
         }
 
     }
