@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,22 +31,15 @@ public class Simulator {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-//        try {
-//            StateStruct state = new StateStruct();
-//            printState(state);
-//        }catch (Error e){
-//            System.out.println("Error");
-//        }
+
         StateStruct state = new StateStruct();
 
-
         try {
-            File myText = new File("src/machine-code.txt");
+            File myText = new File("Simulator/machine-code.txt");
             Scanner s = new Scanner(myText);
             while (s.hasNextLine()) {
                 String data = s.nextLine();
                 state.mem[state.numMemory] = Integer.parseInt(data);
-//                System.out.println(state.mem[state.numMemory]+ "\n");
                 state.numMemory++;
 
             }
@@ -58,23 +48,6 @@ public class Simulator {
             E.printStackTrace();
             System.exit(1);
         }
-
-
-
-
-
-//        try (BufferedReader reader = new BufferedReader(new FileReader(namefile))) {
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                state.mem[state.numMemory] = Integer.parseInt(line);
-//                System.out.println("memory[" + state.numMemory + "]=" + state.mem[state.numMemory]);
-//                state.numMemory++;
-//            }
-//        } catch (IOException E) {
-//            System.err.println("error: can't open files " + namefile);
-//            E.printStackTrace();
-//            System.exit(1);
-//        }
 
         boolean isHalt = false;
         int[] arg = new int[3];
