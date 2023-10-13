@@ -29,5 +29,6 @@
   - Machine code แต่ละแบบ  ในโฟลเดอร์ machineCodes
       - .bin(binary)
       - .txt(decimal)
+
 13/10/2565
   - upgrade code และ algorithm เพื่อให้กระบวนการทำงานเร็วขึ้นประมาณ 14.957%
