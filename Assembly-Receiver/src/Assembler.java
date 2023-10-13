@@ -200,8 +200,18 @@ public class Assembler {
         if (offsetField < -32768 || offsetField > 32767)
             exit(1, "E: beq offsetField out of range[-32768,32767]");
 
-        String offsetFieldBin = (offsetField >= 0) ? toBinaryString(offsetField) : twosCompliment(toBinaryString(-offsetField));
-        return fillBits("0", offsetFieldBin, 16);
+        String offsetFieldBin;
+        if (offsetField >= 0) {
+            offsetFieldBin = toBinaryString(offsetField);
+            offsetFieldBin = fillBits("0", offsetFieldBin, 16);
+
+        } else {
+            offsetField = -offsetField;
+            offsetFieldBin = toBinaryString(offsetField);
+            offsetFieldBin = fillBits("0", offsetFieldBin, 16);
+            offsetFieldBin = twosCompliment(offsetFieldBin);
+        }
+        return offsetFieldBin;
     }
 
     // Process .fill instructions and convert them to machine code
