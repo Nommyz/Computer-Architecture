@@ -30,10 +30,17 @@
 8/10/2566
 - แก้ตรง ishalt ตอนแรกเป็น (0 / 1) -> (true / false)
 - แก้ตรงฟังก์ชัน convertNum ที่ error (ไม่ใช้ฟังก์ชัน convertNum แล้ว แต่เขียนให้ OffsetField ทำ 2s' complement ในฟังก์ชัน IFormat เลย)
-
-8/10/2566
 - เขียนเพิ่มใน switch-case ส่วน case 1: //nand 001
 
 9/10/2566
 - fixed bug
 - ทำให้ code เริ่มรันได้
+
+12/10/2566
+- สรุปแล้วที่รันครั้งก่อนยังเละๆ เพราะเขียนผิดในส่วน switch-case
+- แก้ใน switch-case ตอนนี้รันได้เหมือนใน Example-Run Simulator.txt แล้วเกือบ 100%
+- halt เสร็จแล้ว
+
+13/10/2566
+- ลบ code ส่วนที่ไม่ได้ใช้งานออก
+- แก้ไข path file การอ่านไฟล์ของ simulator
