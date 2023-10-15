@@ -44,7 +44,9 @@
 13/10/2566
 - ลบ code ส่วนที่ไม่ได้ใช้งานออก
 - แก้ไข path file การอ่านไฟล์ของ simulator
+  
 15/10/2566
 - แก้ไข switch case add
 - แก้ไข switch case add ให้ตรงกับของอาจารย์
 - พยายามแก้ตอน run ไปจนถึง 50 state, โดยเปลี่ยน loop จาก 1 to MAXLINELENGTH -> 1 to state.numMemory
+- เปลี่ยนเป็น MAXLINELENGTH เหมือนเดิม
