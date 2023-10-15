@@ -62,10 +62,10 @@ public class Simulator {
                 switch (state.mem[state.pc] >> 22){
                     case 0: //add 000
                         RFormat(state.mem[state.pc],arg);
-                        RegA = state.reg[arg[2]];
+                        RegA = state.reg[arg[0]];
                         RegB = state.reg[arg[1]];
                         DestReg = RegA + RegB;
-                        state.reg[arg[0]] = DestReg;
+                        state.reg[arg[2]] = DestReg;
 
                         state.pc = state.pc + 1;
                         break;
