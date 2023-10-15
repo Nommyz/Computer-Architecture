@@ -56,7 +56,7 @@ public class Simulator {
         boolean isHalt = false;
         int[] arg = new int[3];
         int RegA , RegB , DestReg , Offset;
-        for(int i = 1; i <= state.numMemory ; i++){
+        for(int i = 1; i <= MAXLINELENGTH ; i++){
             if(isHalt == false){
                 printState(state);
                 switch (state.mem[state.pc] >> 22){
