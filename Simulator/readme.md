@@ -46,3 +46,4 @@
 - แก้ไข path file การอ่านไฟล์ของ simulator
 15/10/2566
 - แก้ไข switch case add
+- แก้ไข switch case add ให้ตรงกับของอาจารย์

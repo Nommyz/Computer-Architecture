@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 public class Simulator {
     private static final int NUMMEMORY = 65536; // maximum number of words in memory
     private static final int NUMREGS = 8; // number of machine registers
-    private static final int MAXLINELENGTH = 1000;
+    private static final int MAXLINELENGTH = 50;
 
 
     public static class StateStruct{
@@ -62,10 +62,10 @@ public class Simulator {
                 switch (state.mem[state.pc] >> 22){
                     case 0: //add 000
                         RFormat(state.mem[state.pc],arg);
-                        RegA = state.reg[arg[2]];
+                        RegA = state.reg[arg[0]];
                         RegB = state.reg[arg[1]];
                         DestReg = RegA + RegB;
-                        state.reg[arg[0]] = DestReg;
+                        state.reg[arg[2]] = DestReg;
 
                         state.pc = state.pc + 1;
                         break;
