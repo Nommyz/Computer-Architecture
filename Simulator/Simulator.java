@@ -56,7 +56,7 @@ public class Simulator {
         boolean isHalt = false;
         int[] arg = new int[3];
         int RegA , RegB , DestReg , Offset;
-        for(int i = 1; i <= MAXLINELENGTH ; i++){
+        for(int i = 1; i <= state.numMemory ; i++){
             if(isHalt == false){
                 printState(state);
                 switch (state.mem[state.pc] >> 22){
@@ -70,7 +70,6 @@ public class Simulator {
                         state.pc = state.pc + 1;
                         break;
                     case 1: //nand 001
-                        System.out.println("เข้า case 1: nand");
                         RFormat(state.mem[state.pc],arg);
                         RegA = state.reg[arg[0]];
                         RegB = state.reg[arg[1]];
@@ -109,7 +108,6 @@ public class Simulator {
                         state.pc = state.pc + 1;
                         break;
                     case 3: //sw 011
-                        System.out.println("เข้า case 3: sw");
                         IFormat(state.mem[state.pc],arg);
                         RegA = state.reg[arg[0]];
                         RegB = state.reg[arg[1]];
@@ -131,7 +129,6 @@ public class Simulator {
                         }
                         break;
                     case 5: // jalr 101
-                        System.out.println("เข้า case 5: jalr");
                         JFormat(state.mem[state.pc],arg);
                         RegA = state.reg[arg[0]];
                         RegB = state.reg[arg[1]];
@@ -155,7 +152,6 @@ public class Simulator {
                         state.pc = state.pc + 1;
                         break;
                     case 7: //ไม่ทำอะไร
-                        System.out.println("เข้า case 7: noop");
                         OFormat(state.mem[state.pc],arg);
 
                         state.pc = state.pc + 1;
