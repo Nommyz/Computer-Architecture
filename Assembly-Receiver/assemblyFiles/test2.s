@@ -5,6 +5,7 @@ add 1 1 1 (r1 = r1+r1) r1 = 4+4
 add 1 1 1 (r1 = r1+r1) r1 = 8+8
 add 1 1 1 (r1 = r1+r1) r1 = 16+16
 sw 0 1 store
+done   halt
 
 one .fill 1
 two .fill 2
